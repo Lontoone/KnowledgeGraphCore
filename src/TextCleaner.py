@@ -1,4 +1,3 @@
-from distutils.log import debug
 import re
 from WikiHelper import wikiHelper
 

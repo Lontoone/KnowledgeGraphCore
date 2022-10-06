@@ -1,6 +1,10 @@
+import re
 import wikipediaapi
 
 class wikiHelper:
+    def __init__(self):
+        self.page=""
+        
     def GetPage(self, topic='Python_(programming_language)', lang='en'):
         '''
         wiki_wiki = wikipediaapi.Wikipedia('en')
@@ -16,9 +20,13 @@ class wikiHelper:
             
         )
         p_html = wiki_html.page(topic)
+        self.page=p_html
         if(p_html.exists()):
             # print(p_html.text)
             return p_html.text
+        else:
+            pass
+            #TODO: page 不存在 callback
     
     def GetLocalPage(self , topic ):
         import os
@@ -34,7 +42,11 @@ class wikiHelper:
             with open(filename, 'w' ,encoding='UTF-8') as f:
                 f.write(res)
         return res;
-
+    def GetLinks(self):
+        if self.page!='':
+            return self.page.links.keys()
+        else :
+            return ""
 
 def main():
     wh =wikiHelper()
@@ -43,12 +55,14 @@ def main():
     #print(wh.GetLocalPage(topic='Chien-Ming_Wang'))
     #print(wh.GetLocalPage(topic='Wang_Jianmin_(full_general)'))
     #print(wh.GetLocalPage(topic='Python_(programming_language)'))
-    from TextCleaner import textCleaner
     #print(wh.GetPage(topic='Python_(programming_language)'))
+    
+    #from TextCleaner import textCleaner
     text = wh.GetPage(topic='Python_(programming_language)')
-    tc= textCleaner(text)
-    cleanedText=tc.cleanText()
-    print(cleanedText)
+    print(wh.GetLinks())
+    #tc= textCleaner(text)
+    #cleanedText=tc.cleanText()
+    #print(cleanedText)
 
 
 if __name__ == '__main__':

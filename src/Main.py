@@ -1,5 +1,4 @@
-import math
-from unicodedata import name
+from faulthandler import disable
 from spacy.tokens import Doc
 from ARHelper import AnaphoraResolutionHelper
 from Id_tdfHelper import idfHelper
@@ -13,92 +12,77 @@ import spacy
 import numpy as np
 import neuralcoref
 from spacy.matcher import Matcher
+import re
 #jupyter notebook --notebook-dir=D:\Work\NUTC_gdb\src
-def main(_cleanText):
-    # 取得文本
-    '''
-    wiki = wikiHelper()
-    #text =wiki.GetPage("Caracalla")
-    #text =wiki.GetPage()
-    #text= wiki.GetLocalPage("1998_Lesotho_general_election")
-    #text= wiki.GetLocalPage("Semantic_Web")
-    text= wiki.GetLocalPage("Python_(programming_language)")
-    #text= wiki.GetLocalPage("Caracalla")
-    #text= wiki.GetLocalPage("Magic_(game_terminology)")
-    #text= wiki.GetLocalPage("Sword_Art_Online")
-    #text =wiki.GetPage("Semantic_Web")
-    #text='Python supports multiple programming paradigms, including structured (particularly procedural), object-oriented and functional programming.'
-    #text='Python is often described as a "batteries included" language due to Python comprehensive standard library.'
-    #text ="An animated film titled Sword Art Online The Movie: Ordinal Scale, featuring an original story by Kawahara set after the events of Sword Art Online II, premiered in Japan and Southeast Asia on February 18, 2017, and was released in the United States on March 9, 2017."
-    
-    #print("取得文本 ", text)
-    
-    # 文本清理    
-    tc=textCleaner(text)
-    cleanedText=tc.cleanText()
-    '''
-    cleanedText = _cleanText
-    #cleanParas= tc.cleanParagraphs()
-    
-    #---------- 斷句 --------------
-    nlp = spacy.load("en_core_web_sm")    
+
+nlp = spacy.load("en_core_web_sm")    
+def setupNlp(nlp):    
     nlp.add_pipe(nlp.create_pipe('sentencizer'))
     #--------- 合併斷句 ------------
     sbd= SbdHelper()
     Doc.set_extension("briefSents" , default=None , force=True)
     nlp.add_pipe(sbd.briefSbd, after="sentencizer",name="sbd")
     
+    # ar 處理
+    #nlp_ar.remove_pipe('sbd')
+    Doc.set_extension("referedSents" , default=None , force=True)
+    neuralcoref.add_to_pipe(nlp, name="neuralcoref",after="briefSents")    
+    ar = AnaphoraResolutionHelper()    
+    nlp.add_pipe(ar.arReplacement,name="arReplacement", after="neuralcoref")  
+    
+    # 文本後處理
+    #nlp.remove_pipe('sentencizer')
+    
+    
+    
+
+def main(_cleanText,preserveRate , writeDB):
+    # 取得文本
+    cleanedText = _cleanText
+    #cleanParas= tc.cleanParagraphs()
+    
+    #---------- 斷句 --------------
+    
+    #--------- 合併斷句 ------------
+    
+    disabled = nlp.disable_pipes(["neuralcoref","arReplacement"]);
     doc= nlp(cleanedText)    
-    #matches = matcher(doc)
+    disabled.restore()
     
     print("句子數 ",len(list(doc.sents)), len(doc._.briefSents))    
     print(doc._.briefSents [:15])
     
-    #--------- 回指消解 ------------
-    Doc.set_extension("referedSents" , default=None , force=True)
+    #--------- 回指消解 ------------    
     print("--------- 回指消解 ------------")
-    #nlp_ar=spacy.load("en_core_web_sm")
-    nlp_ar= nlp
-    nlp_ar.remove_pipe('sbd')
-    neuralcoref.add_to_pipe(nlp_ar, name="neuralcoref",after="briefSents")    
-    ar = AnaphoraResolutionHelper()    
-    nlp_ar.add_pipe(ar.arReplacement,name="arReplacement", after="neuralcoref")  
     
-    print("has cor ",doc._.has_coref)
-    print("clusters ",doc._.coref_clusters)
+    disabled = nlp.disable_pipes(["sbd"])
     
-    
-    #doc_array= []
     clean_full_text= ""
     for sent in doc._.briefSents[:]:
-        sent_doc= nlp_ar(sent.text)
-        #print("------------------------------ ar 結果-----------------------------------------")
-        #print(sent_doc._.referedSents)
-        #doc_array.append(sent_doc)
+        sent_doc= nlp(sent.text)    
         clean_full_text+=sent_doc._.referedSents
-        #print(sent_doc._.coref_clusters)
-        
+    disabled.restore()
+    
     print("------- ar doc長度--------")
     #print(len(doc_array))
     print("------- 乾淨full文本 --------")
-    print(clean_full_text)
+    #print(clean_full_text)
    
     #----------- 文本後處理 ?----------------
     
-    # full process
-    #nlp_full = spacy.load("en_core_web_sm")    
+    disabled = nlp.disable_pipes(["sentencizer","sbd","neuralcoref","arReplacement"]);
     nlp_full = nlp
-    nlp_full.remove_pipe('sentencizer')
     full_doc = nlp_full(clean_full_text)
     sents= list(full_doc.sents)
     
     print("------------ LSA -------------")
     lsa = LsaHelper(full_doc) #初始化辭庫
     lsa.getSentencesImportence(sents)
-    #lsa.drawFeatureHeatMap()
+    #lsa.drawFeatureHeatMap() #畫關聯圖
     print("------------ LSA剔除 -------------")
     filtered_sents=[]
-    threshold=lsa.getPassThreshold(0.15)
+    threshold=lsa.getPassThreshold(preserveRate)
+    #threshold = 0.45
     for i , val in enumerate(lsa.sents_avgSim):
         if val>=threshold:
             filtered_sents.append(sents[i])
@@ -110,8 +94,6 @@ def main(_cleanText):
     
     # 知識抽取    
     #------------- 實體 ------------------    
-    #merge_nps = nlp.create_pipe("merge_noun_chunks")
-    #nlp_full.add_pipe(merge_nps)
     print("------- Noun chunks --------")
     nodePairs=[]
     for sent in filtered_sents:
@@ -123,84 +105,106 @@ def main(_cleanText):
         spliter=NodeSpliter(nuns) #合併noun chunks
         pairs=spliter.split()
         if pairs:    
-            nodePairs.append(pairs[:])    
-            
-    #idf_helper= idfHelper()    
-    #idf_helper.count(nodePairs)
-    #print("sent長度",len(sent_doc),"nodePair長度",len(nodePairs), "idf總數",idf_helper.sentCount)
-    '''
-    #計算共現次數
-    print("------- 計算共現 --------")
-    for pairs in nodePairs[:]:
-        for pair in pairs:
-            #print(pair.entity1.name,"-> [",pair.relation,"] ->",pair.entity2.name)
-            pair.coVector = lsa.getCooccDict(pair.entity1.name+" "+pair.relation+" "+pair.entity2.name);
-            print(pair.coVector)
-        #print()
+            nodePairs.append(pairs[:])              
     
-    #return nodePairs;     
-    features, dictvectorizer= lsa.combineDictToMatrix([y for x in nodePairs for y in x])
-    lsa.featuresSVD(features)
-    # 重建Lsa權重矩陣 
-    #r=5 #取前幾個奇異值
-    #up , sp , vp = lsa.u[:,0:r] , np.diag(lsa.s[0:r]) , lsa.vh[:,0:r]
-    #ap = up @ sp @ vp.T
-    print("======= SVD ============")
-    #print(up, sp , vp,ap)
-    print("======= s normalized ============")
-    norm =np.linalg.norm(lsa.s)
-    norm_lsa_s = lsa.s / norm  #標準化後的，每個句子的奇異值    
-    #print(norm_lsa_s)    
-    '''
- 
+    disabled.restore()
     
     #-------------- 文本相似度 ---------------------    
     finalNodes=[]    
-    filteredNodes=[]    
     i=0
     for pairs in nodePairs[:]:        
         for pair in pairs:           
             finalNodes.append(pair)
-            print(pair.entity1.name,"-> [",pair.relation,"] ->",pair.entity2.name)
-            '''
-            pair.sentSing=norm_lsa_s[i]
-            if pair.sentSing>0.001:
-                finalNodes.append(pair)
-            else:
-                filteredNodes.append(pair)
-            i+=1
-            print()             
-            '''             
-            
-        #print()
-    
-    #檢查結果
-    '''
-    print("============ Final Outcomes=============")
-    for pair in finalNodes:
-        print(pair.sentSing,pair.entity1.name,"-> [",pair.relation,"] ->",pair.entity2.name)
-    print("============ Filter Outcomes=============")
-    for pair in filteredNodes:
-        print(pair.sentSing,pair.entity1.name,"-> [",pair.relation,"] ->",pair.entity2.name)
-    '''
+            print(pair.entity1.name,"-> [",pair.relation,"] ->",pair.entity2.name)    
+   
     #-------------- 上傳 Neo4j ---------------------
-    '''
-    '''
-    db= Neo4JHelper()
-    db.writeNode(finalNodes)
-    ##db.writeNode(nodePairs)
+    if writeDB:
+        db= Neo4JHelper()
+        db.writeNode(finalNodes)
+        ##db.writeNode(nodePairs)
             
     # 得出nodes....繼續
     return finalNodes
 
-if __name__=="__main__":
-    # 取得文本    
+def doProcess(pageTitle , itLeft):
+    if (itLeft<=0):
+        return;
+    
     wiki = wikiHelper()
-    text= wiki.GetLocalPage("Python_(programming_language)")
-    # 文本清理    
+        #NLP
+    text= wiki.GetPage(pageTitle)
     tc=textCleaner(text)
+    cleanText = tc.cleanText(text);
+    nodes = main(cleanText,0.15,True)
+        
+    #爬蟲
+    links = wiki.GetLinks()
+    relativeLinks=[]
+    for pair in nodes:
+        _ent1_pureText= re.sub(r"[_\W]","",pair.entity1.name).lower()
+        _ent2_pureText= re.sub(r"[_\W]","",pair.entity2.name).lower()                
+        for link in links:
+            _lk_pureText=re.sub(r"\(.*\)" , "" , link).lower()
+            if _lk_pureText in _ent1_pureText or _lk_pureText in _ent2_pureText:                
+                relativeLinks.append(link)
+        
+                
+            #print(pair.entity1.name,"-> [",pair.relation,"] ->",pair.entity2.name)       
+    relativeLinks =  list(dict.fromkeys(relativeLinks)) #移除重複的
+    print("==================",itLeft," :相關 link ", relativeLinks,"=====================")
+    for link in relativeLinks:
+        doProcess(link,(itLeft-1))
+        
+    pass
+
+if __name__=="__main__":
+    setupNlp(nlp)
+    MAX_IT=3
+    doProcess("Sword_Art_Online",MAX_IT);
+    '''
+    wiki = wikiHelper()
+    for i in range(0,MAX_IT):
+        if i==0:
+            #TODO: 第一次只查關鍵字            
+            # 取得文本    
+            #text= wiki.GetLocalPage("Python_(programming_language)")
+            text= wiki.GetPage("Python_(programming_language)")
+            #text= wiki.GetLocalPage("Sword_Art_Online")
+            # 文本清理    
+            tc=textCleaner(text)
+            cleanText = tc.cleanText(text);
+            nodes = main(cleanText,0.15,False)
+            
+            pass
+        
+        else:
+            #TODO:找links
+            links = wiki.GetLinks()
+            relativeLinks=[]
+            for pair in nodes:
+                _ent1_pureText= re.sub(r"[_\W]","",pair.entity1.name).lower()
+                _ent2_pureText= re.sub(r"[_\W]","",pair.entity2.name).lower()                
+                for link in links:
+                    _lk_pureText=re.sub(r"\(.*\)" , "" , link).lower()
+                    if _lk_pureText not in relativeLinks \
+                        and (_lk_pureText in _ent1_pureText or _lk_pureText in _ent2_pureText):
+                        relativeLinks.append(link)
+                        pass
+                    pass               
+                
+                #print(pair.entity1.name,"-> [",pair.relation,"] ->",pair.entity2.name)       
+            pass        
+            print("相關 link ", relativeLinks)
+        pass
+    '''
+    
+    '''
     paras= tc.cleanParagraphs(text)
     for para in paras:
+        #temp! 句子數過短的暫時跳過
+        if(len(para)<300):
+            continue
         print("=== 處理 ===",para)
         print()
         nodes = main(para)
+    '''

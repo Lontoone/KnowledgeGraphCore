@@ -1,0 +1,11 @@
+libreoffice -> [ of ] -> most popular linux distributions 
+libreoffice -> [ support ] -> a "hybrid pdf" format
+libreoffice -> [ use ] -> the opendocument standard
+libreoffice -> [ for ] -> a web browser libreoffice the use  the canvas element using
+libreoffice -> [ use ] -> the open document format
+libreoffice -> [ use ] -> harfbuzz
+libreoffice cousin project apache openoffice libreoffice libreoffice -> [ win ] -> the battle
+libreoffice -> [ of ] -> the existing proprietary office suite parallel 14,000 pc workstations libreoffice 
+libreoffice -> [ support ] -> third-party extensions
+libreoffice -> [ see ] -> various major deployments
+libreoffice -> [ release ] -> collabora

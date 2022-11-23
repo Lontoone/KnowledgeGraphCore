@@ -1,0 +1,27 @@
+javascript -> [ on ] -> different scenarios
+older versions -> [ of ] -> javascript a function object
+the application author -> [ run ] -> the application
+a language feature -> [ in ] -> most javascript implementations
+author javascript code -> [ extract ] -> a determined adversary their javascript code 
+javascript -> [ support ] -> anonymous functions
+the way javascript -> [ implement ] -> these conversions
+function completion javascript -> [ to ] -> the queue the next message 
+javascript -> [ from ] -> modules
+javascript -> [ as ] -> java
+javascript -> [ receive ] -> criticism
+javascript -> [ consider ] -> 
+a common misconception -> [ as ] -> javascript
+combinator methods -> [ in ] -> the javascript specification developers
+the application -> [ run ] -> author javascript code
+multiple javascript promises -> [ on ] -> operations
+javascript -> [ of ] -> the web many websites
+the call stack -> [ upon ] -> function completion javascript
+javascript -> [ of ] -> the javascript name confusion
+over 80% -> [ on ] -> users' devices
+javascript -> [ in ] -> the ecmascript standard time 
+javascript -> [ for ] -> i 
+over 80% -> [ on ] -> the user's device
+javascript -> [ of ] -> the web  98% using
+the call stack -> [ of ] -> web browsers javascript 
+over 80% -> [ provide ] -> the web browser
+over 80% -> [ of ] -> websites a third-party javascript library

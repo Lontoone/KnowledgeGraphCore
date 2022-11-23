@@ -1,0 +1,6 @@
+llvm -> [ support ] -> a language-independent instruction set and type system
+llvm -> [ in ] -> llvm exceptions the apache license the process 
+llvm -> [ by ] -> the llvm foundation
+most llvm targets -> [ include ] -> ia-32 
+llvm -> [ to ] -> the llvm umbrella project the llvm intermediate representation
+llvm -> [ provide ] -> the middle layers

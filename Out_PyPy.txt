@@ -1,0 +1,6 @@
+pypy -> [ claim ] -> compatibility
+the pypy project -> [ release ] -> version
+pypy -> [ than ] -> the standard implementation cpython pypy
+pypy -> [ on ] -> windows pure python software
+pypy -> [ on ] -> pattern matching syntax python newer features 
+pypy -> [ of ] -> the python programming language 

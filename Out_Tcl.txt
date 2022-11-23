@@ -1,0 +1,16 @@
+tcl -> [ contain ] -> each variable
+tcl database connectivity -> [ of ] -> tcl drivers
+tcl -> [ emerge ] -> oriented syntax
+tcl web server -> [ as ] -> a vanilla tcl interpreter top a script 
+tcl -> [ allow ] -> critcl
+tcl -> [ allow ] -> the reverse
+unix testing use prolific areas tcl the popularity tcl expect tcl -> [ in ] -> industry these areas 
+tcl database connectivity -> [ of ] -> tcl scripts tcl 
+tcl -> [ gain ] -> acceptance
+tcl -> [ harm ] -> tcl scripts
+tcl -> [ host ] -> machine
+tcl -> [ of ] -> command invocations a series 
+tcl -> [ harm ] -> tcl scripts
+tcl -> [ of ] -> tcl features
+tcl -> [ use ] -> several other small-footprint versions tcl full form embedded systems platforms 
+tcl -> [ for ] -> many operating systems tcl code

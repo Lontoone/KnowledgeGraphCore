@@ -8,16 +8,27 @@ class LsaHelper:
         self.words_count_dict={}#紀錄 <字,字數>的字典
         self.sentCount=0
         
+        if (doc==None):
+            return
+        
         for sent in doc.sents:
             for word in sent:
                 #不考慮stop word跟標點符號
                 if word.is_stop or word.is_punct:
                     continue
                 #剩下的加入字典                
-                self.words_count_dict[word.lemma_.lower()]=0
-                
+                #self.words_count_dict[word.lemma_.lower()]=0
+                self.words_count_dict[word.lower_]=0              
                     
-        print(self.words_count_dict)
+        #print(self.words_count_dict)
+        
+    #用Pairs初始化字典
+    def initWithPairs(self , pairs):
+        for pair in pairs:
+            #加入字典                            
+            self.words_count_dict[pair.lower()]=0          
+            
+        pass
     
     def getSentencesImportence(self , sents):
         #Sentences embedding
@@ -25,9 +36,13 @@ class LsaHelper:
         _sc=0
         #每個句子的word count dict
         for s in sents:
-            _wcDict = self.getCooccDict(s.lemma_)
+            #_wcDict = self.getCooccDict(s.lemma_)
+            #_wcDict = self.getCooccDict(s.lower_) #[重要更改]
+            _wcDict = self.getCooccDict(s)            
             wcDicts.append(_wcDict)
             _sc+=1
+        if(len(wcDicts)==0):
+            return [-1]
         #合併成一個matrix
         self.f , self.d = self.combineVecsToMatrix(wcDicts)
         #u,s,vh = self.featuresSVD(f)        

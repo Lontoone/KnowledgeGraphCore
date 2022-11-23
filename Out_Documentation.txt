@@ -1,0 +1,2 @@
+ways -> [ make ] -> documentation
+documentation -> [ make ] -> the 'research

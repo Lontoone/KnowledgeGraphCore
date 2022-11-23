@@ -1,0 +1,91 @@
+c.
+numba llvm -> [ at ] -> the python software foundation and python book author something
+groovy -> [ with ] -> the most popular programming languages version 
+groovy -> [ as ] -> a "batteries included " language
+pythran -> [ from ] -> python the division operator
+groovy -> [ make ] -> changes
+groovy -> [ with ] -> earlier versions 
+groovy -> [ for ] -> the lisp tradition functional programming 
+groovy -> [ support ] -> multiple programming paradigms
+guido van rossum -> [ on ] -> the abc programming language a successor the late 1980s python python
+groovy -> [ into ] -> modules its core 
+groovy -> [ offer ] -> some support
+groovy -> [ by ] -> value
+groovy -> [ define ] -> programmers
+groovy -> [ make ] -> a distinction
+games -> [ with ] -> pygame libraries 2d games
+c languages pypy -> [ in ] -> time
+pythran -> [ in ] -> c languages pypy
+groovy -> [ translate ] -> a python script
+libreoffice -> [ type ] -> objects
+games -> [ move ] -> a python programmer
+groovy -> [ use ] -> english keywords
+pythran -> [ in ] -> python  strings adding
+libreoffice -> [ define ] -> their own types
+many operating systems -> [ include ] -> python
+groovy -> [ than ] -> fewer syntactic exceptions
+python sdl qt -> [ in ] -> python 
+the emitted code -> [ use ] -> other languages
+c.
+numba llvm -> [ between ] -> lists 
+pythran -> [ of ] -> python
+a python programmer -> [ move ] -> time-critical functions
+a python script -> [ into ] -> c direct c-level api
+groovy -> [ create ] -> games
+groovy -> [ in ] -> october the tiobe programming community index the top ten most popular programming languages it
+python design philosophy -> [ emphasize ] -> code readability
+the ** operator -> [ use ] -> punctuation
+monty python references -> [ in ] -> modules
+their own types -> [ use ] -> classes
+monty python references -> [ in ] -> example python code the metasyntactic variables
+groovy -> [ to ] -> a "string format" operator %
+guido van rossum -> [ with ] -> significant indentation the use 
+python  strings adding -> [ in ] -> python  spameggs adding
+groovy -> [ as ] -> pythonistas 
+groovy -> [ use ] -> duck typing
+pythran -> [ for ] -> object-oriented programming
+examples -> [ of ] -> python applications names the prefix the use pygame
+groovy -> [ as ] -> the apache webserver web applications a scripting language 
+groovy -> [ expect ] -> these releases
+games -> [ support ] -> python
+examples -> [ of ] -> c++ python 
+c.
+numba llvm -> [ compile ] -> a subset
+c++ transpiler -> [ compile ] -> a subset
+groovy -> [ into ] -> c.
+numba llvm
+pythran -> [ compile ] -> a subset
+examples -> [ of ] -> c++ python 
+the emitted code -> [ for ] -> the standard python code certain data types 
+groovy -> [ compile ] -> c++ transpiler
+examples -> [ of ] -> machine code python 
+groovy -> [ of ] -> two kinds
+groovy -> [ allow ] -> boolean expressions
+groovy -> [ for ] -> the usual symbols
+groovy -> [ for ] -> all integer operations
+examples -> [ in ] -> python python
+groovy -> [ use ] -> 3.0 rules
+__ import division -> [ in ] -> a module
+groovy -> [ use ] -> whitespace indentation
+the ** operator -> [ for ] -> exponentiation
+the + operator -> [ for ] -> string concatenation
+groovy -> [ use ] -> the + operator
+groovy -> [ use ] -> the ** operator
+groovy -> [ use ] -> the * operator
+tail call optimization -> [ than ] -> curly brackets blocks
+groovy -> [ support ] -> tail call optimization
+tail call optimization -> [ to ] -> van rossum python
+the * operator -> [ of ] ->  a string duplicating
+groovy -> [ as ] -> a standard component
+examples -> [ contain ] -> the python package index
+groovy -> [ in ] -> exploit development the information security industry 
+groovy -> [ use ] -> the call stack
+groovy -> [ in ] -> c pypy
+libreoffice -> [ include ] -> python
+the emitted code -> [ of ] -> cpython stackless python
+groovy -> [ by ] -> the desire bring the python design philosophy
+groovy -> [ replace ] -> java
+groovy -> [ with ] -> an integrated development environment 
+the call stack -> [ in ] -> the same way massively concurrent programs
+groovy -> [ of ] -> time the python runtime the execution
+groovy -> [ of ] -> python 
